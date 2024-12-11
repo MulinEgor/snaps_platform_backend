@@ -1,0 +1,163 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider  = "prisma-client-py"
+  interface = "asyncio"
+}
+
+model Role {
+  uuid  String @id @default(uuid())
+  name  String
+  users User[]
+
+  @@map("roles")
+}
+
+model User {
+  uuid            String   @id @default(uuid())
+  email           String   @unique
+  hashed_password String
+  role_uuid       String
+  role            Role     @relation(fields: [role_uuid], references: [uuid])
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum ApplicationType {
+  MOBILE
+  WEB
+}
+
+model Media {
+  uuid           String         @id @default(uuid())
+  url            String
+  alt            String?
+  team_members   TeamMember[]
+  project_medias ProjectMedia[]
+  guarantees     Guarantee[]
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+
+  @@map("medias")
+}
+
+model Service {
+  uuid                    String   @id @default(uuid())
+  name                    String
+  includes                String
+  implementation_timeline DateTime
+  price                   Decimal
+  created_at              DateTime @default(now())
+  updated_at              DateTime @updatedAt
+
+  @@map("services")
+}
+
+model Guarantee {
+  uuid       String   @id @default(uuid())
+  name       String
+  media_uuid String
+  media      Media    @relation(fields: [media_uuid], references: [uuid])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("guarantees")
+}
+
+model Project {
+  uuid                    String          @id @default(uuid())
+  name                    String
+  description             String
+  application_type        ApplicationType
+  stack                   String
+  implementation_timeline DateTime
+  project_medias          ProjectMedia[]
+  reviews                 Review[]
+  created_at              DateTime        @default(now())
+  updated_at              DateTime        @updatedAt
+
+  @@map("projects")
+}
+
+model ProjectMedia {
+  uuid         String  @id @default(uuid())
+  project_uuid String
+  project      Project @relation(fields: [project_uuid], references: [uuid])
+  media_uuid   String
+  media        Media   @relation(fields: [media_uuid], references: [uuid])
+
+  @@map("project_medias")
+}
+
+model Stage {
+  uuid        String   @id @default(uuid())
+  place       Int
+  name        String
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("stages")
+}
+
+model TeamMember {
+  uuid        String   @id @default(uuid())
+  name        String
+  position    String
+  description String
+  media_uuid  String
+  media       Media    @relation(fields: [media_uuid], references: [uuid])
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("team_members")
+}
+
+model Question {
+  uuid       String   @id @default(uuid())
+  question   String
+  answer     String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("questions")
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Request {
+  uuid             String          @id @default(uuid())
+  name             String
+  email            String
+  phone            String
+  application_type ApplicationType
+  description      String
+  price            Decimal
+  status           Status          @default(PENDING)
+  created_at       DateTime        @default(now())
+  updated_at       DateTime        @updatedAt
+
+  @@map("requests")
+}
+
+model Review {
+  uuid          String   @id @default(uuid())
+  name          String
+  description   String
+  reviewer_name String
+  project_uuid  String
+  project       Project  @relation(fields: [project_uuid], references: [uuid])
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("reviews")
+}
