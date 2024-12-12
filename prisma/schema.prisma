@@ -28,11 +28,6 @@ model User {
   @@map("users")
 }
 
-enum ApplicationType {
-  MOBILE
-  WEB
-}
-
 model Media {
   uuid           String         @id @default(uuid())
   url            String
@@ -46,16 +41,16 @@ model Media {
   @@map("medias")
 }
 
-model Service {
-  uuid                    String   @id @default(uuid())
-  name                    String
-  includes                String
-  implementation_timeline DateTime
-  price                   Decimal
-  created_at              DateTime @default(now())
-  updated_at              DateTime @updatedAt
+model Favor {
+  uuid           String   @id @default(uuid())
+  name           String
+  includes       String
+  duration_weeks Float
+  price          Float
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
 
-  @@map("services")
+  @@map("favors")
 }
 
 model Guarantee {
@@ -69,17 +64,22 @@ model Guarantee {
   @@map("guarantees")
 }
 
+enum ApplicationType {
+  MOBILE
+  WEB
+}
+
 model Project {
-  uuid                    String          @id @default(uuid())
-  name                    String
-  description             String
-  application_type        ApplicationType
-  stack                   String
-  implementation_timeline DateTime
-  project_medias          ProjectMedia[]
-  reviews                 Review[]
-  created_at              DateTime        @default(now())
-  updated_at              DateTime        @updatedAt
+  uuid             String          @id @default(uuid())
+  name             String
+  description      String
+  application_type ApplicationType
+  stack            String
+  duration_weeks   Float
+  project_medias   ProjectMedia[]
+  reviews          Review[]
+  created_at       DateTime        @default(now())
+  updated_at       DateTime        @updatedAt
 
   @@map("projects")
 }
@@ -141,7 +141,7 @@ model Request {
   phone            String
   application_type ApplicationType
   description      String
-  price            Decimal
+  price            Float
   status           Status          @default(PENDING)
   created_at       DateTime        @default(now())
   updated_at       DateTime        @updatedAt
