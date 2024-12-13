@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Chekout
+      uses: actions/checkout@v3
 
     - name: Create .env file
       run: |
@@ -27,7 +28,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-           ls -la       
+           ls  
            docker compose up -d --build
 
     - name: Check deployment status
