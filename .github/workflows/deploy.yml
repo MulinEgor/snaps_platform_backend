@@ -19,15 +19,12 @@ jobs:
         echo "POSTGRES_USER=${{ vars.POSTGRES_USER }}" >> .env
         echo "POSTGRES_PASSWORD=${{ vars.POSTGRES_PASSWORD }}" >> .env
         echo "POSTGRES_DB=${{ vars.POSTGRES_DB }}" >> .env 
-        echo "DATABASE_URL=${{ vars.DATABASE_URL }}" >> .env
-        cat .env
 
     - name: Start docker compose
       run: |
           docker compose up -d --build
 
-    - name: Check docker compose status
+    - name: View logs 
       run: |
-        docker compose ps
-        docker compose logs -f
+        screen -dmS docker_logs bash -c 'docker compose logs -f'  
           
