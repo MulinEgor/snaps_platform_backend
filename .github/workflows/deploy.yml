@@ -22,12 +22,12 @@ jobs:
         echo "POSTGRES_DB=${{ env.POSTGRES_DB }}" >> .env
 
     - name: Start docker compose
-      script: |
+      run: |
           ls
           docker compose up -d --build
 
     - name: Check docker compose status
-      script: |
+      run: |
         docker-compose ps
         docker-compose logs --tail=50
           
