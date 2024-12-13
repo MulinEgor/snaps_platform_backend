@@ -22,9 +22,5 @@ jobs:
 
     - name: Start docker compose
       run: |
-          docker compose up -d --build
-
-    - name: View logs 
-      run: |
-        screen -dmS docker_logs bash -c 'docker compose logs -f'  
+          docker compose up --build
           
