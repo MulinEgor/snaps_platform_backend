@@ -27,6 +27,6 @@ jobs:
 
     - name: Check docker compose status
       run: |
-        docker-compose ps
-        docker-compose logs --tail=50
+        docker compose ps
+        docker compose logs --tail=50
           
