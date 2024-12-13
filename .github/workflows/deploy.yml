@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: server_runner
+    runs-on: self-hosted
     
     steps:
     - name: Checkout
