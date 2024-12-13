@@ -28,7 +28,8 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-           ls  
+           cd /home/runner/work/snaps_platform_backend/snaps_platform_backend
+           ls
            docker compose up -d --build
 
     - name: Check deployment status
