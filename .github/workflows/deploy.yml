@@ -20,6 +20,7 @@ jobs:
         echo "POSTGRES_PASSWORD=${{ vars.POSTGRES_PASSWORD }}" >> .env
         echo "POSTGRES_DB=${{ vars.POSTGRES_DB }}" >> .env 
         echo "DATABASE_URL=${{ vars.DATABASE_URL }}" >> .env
+        cat .env
 
     - name: Start docker compose
       run: |
@@ -28,5 +29,5 @@ jobs:
     - name: Check docker compose status
       run: |
         docker compose ps
-        docker compose logs --tail=50
+        docker compose logs -f
           
