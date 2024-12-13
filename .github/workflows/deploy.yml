@@ -1,0 +1,44 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Create .env file
+      run: |
+        echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
+        echo "API_HOST=${{ env.API_HOST }}" >> .env
+        echo "API_PORT=${{ env.API_PORT }}" >> .env
+        echo "POSTGRES_USER=${{ env.POSTGRES_USER }}" >> .env
+        echo "POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }}" >> .env
+        echo "POSTGRES_DB=${{ env.POSTGRES_DB }}" >> .env
+
+    - name: Deploy to Docker Host
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        script: |
+          cd /app
+          docker-compose pull
+          docker-compose up -d --build
+
+    - name: Check deployment status
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        script: |
+          cd /app
+          docker-compose ps
+          docker-compose logs --tail=50
+          
