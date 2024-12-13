@@ -27,8 +27,8 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-          cd app
-          docker compose up -d --build
+           ls -la       
+           docker compose up -d --build
 
     - name: Check deployment status
       uses: appleboy/ssh-action@master
@@ -37,7 +37,6 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-          cd app
           docker-compose ps
           docker-compose logs --tail=50
           
