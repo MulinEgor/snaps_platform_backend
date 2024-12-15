@@ -1,5 +1,5 @@
 fastapi
 uvicorn
 pydantic
-prisma
+prisma==0.15.0
 strawberry-graphql
