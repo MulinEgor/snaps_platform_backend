@@ -1,54 +1,62 @@
-from uuid import UUID
 from strawberry.exceptions import GraphQLError
 
 from api.favors.repository import FavorRepository
 from api.favors.types.response import FavorGetSchema
-from api.favors.types.request import FavorCreateSchema, FavorUpdateSchema
+from api.favors.types.request import FavorCreateSchema, FavorOptionalSchema
 from api.logger import get_logger
 
 
 class FavorService:
+    logger = get_logger("FavorService")
+
     def __init__(self, repository: FavorRepository):
         self.repository = repository
-        self.logger = get_logger(__name__)
 
     async def get(self, uuid: str) -> FavorGetSchema | None:
+        self.logger.info(f"Fetching favor with uuid: {uuid}")
         favor = await self.repository.get(uuid)
         if not favor:
             self.handle_error(f"Favor with uuid: {uuid} not found")
+        self.logger.info(f"Favor with uuid: {uuid} retrieved successfully")
         return favor
 
-    async def get_all(self) -> list[FavorGetSchema] | None:
-        favors = await self.repository.get_all()
+    async def get_all(self, filters: FavorOptionalSchema) -> list[FavorGetSchema] | None:
+        self.logger.info(f"Fetching all favors with filters: \n{
+                         filters.to_dict()}")
+        favors = await self.repository.get_all(filters)
         if not favors:
             self.handle_error("No favors found")
+        self.logger.info(f"Retrieved {len(favors)} favors")
         return favors
 
     async def create(self, data: FavorCreateSchema) -> FavorGetSchema | None:
+        self.logger.info(f"Creating favor with data: {data}")
         favor = await self.repository.create(data)
         if not favor:
             self.handle_error("Failed to create favor")
+        self.logger.info(f"Favor created successfully with uuid: {favor.uuid}")
         return favor
 
-    async def update(self, uuid: str, data: FavorUpdateSchema) -> FavorGetSchema | None:
-        if not await self.get(uuid):
-            self.handle_error(f"Favor with uuid: {uuid} not found")
+    async def update(self, uuid: str, data: FavorOptionalSchema) -> FavorGetSchema | None:
+        self.logger.info(f"Updating favor with uuid: {uuid} and data: {data}")
+        await self.get(uuid)
 
         favor = await self.repository.update(uuid, data)
-        self.logger.info(favor)
         if not favor:
             self.handle_error(f"Failed to update favor with uuid: {uuid}")
+        self.logger.info(f"Favor with uuid: {uuid} updated successfully")
         return favor
 
     async def delete(self, uuid: str) -> FavorGetSchema | None:
-        if not await self.get(uuid):
-            self.handle_error(f"Favor with uuid: {uuid} not found")
+        self.logger.info(f"Deleting favor with uuid: {uuid}")
+        await self.get(uuid)
 
         favor = await self.repository.delete(uuid)
         if not favor:
             self.handle_error(f"Failed to delete favor with uuid: {uuid}")
+        self.logger.info(f"Favor with uuid: {uuid} deleted successfully")
         return favor
 
     def handle_error(self, message: str):
-        self.logger.error(message)
+        self.logger.error(f"Error: {message}")
         raise GraphQLError(message)
