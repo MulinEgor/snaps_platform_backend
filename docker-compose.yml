@@ -2,7 +2,7 @@ services:
   api:
     container_name: api
     build: .
-    command: /bin/bash init.sh
+    command: sh -c ./init.sh
     volumes:
       - .:/app
     ports:
