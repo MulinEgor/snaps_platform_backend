@@ -24,7 +24,3 @@ jobs:
       run: |
           docker compose up -d --build
           
-    - name: Check docker compose 
-      run: |
-          sleep 20
-          docker compose logs api
