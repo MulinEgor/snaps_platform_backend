@@ -2,7 +2,7 @@ services:
   api:
     container_name: api
     build: .
-    command: /bin/bash -c "scripts/init.sh && scripts/start.sh"
+    command: /bin/bash -c "chmod +x scripts/init.sh && scripts/init.sh && scripts/start.sh"
     volumes:
       - .:/app
     env_file:
