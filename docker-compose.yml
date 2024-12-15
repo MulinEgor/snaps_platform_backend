@@ -2,13 +2,15 @@ services:
   api:
     container_name: api
     build: .
-    command: /bin/bash init.sh
+    command: /bin/bash -c "scripts/init.sh && scripts/start.sh"
     volumes:
       - .:/app
-    ports:
-      - "${API_PORT}:${API_PORT}"
     env_file:
       - .env
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
     depends_on:
       - db
 
@@ -17,5 +19,7 @@ services:
     image: postgres:13
     env_file:
       - .env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - "5432:5432"

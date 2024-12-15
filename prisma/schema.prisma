@@ -41,14 +41,20 @@ model Media {
   @@map("medias")
 }
 
+enum ApplicationType {
+  MOBILE
+  WEB
+}
+
 model Favor {
-  uuid           String   @id @default(uuid())
-  name           String
-  includes       String
-  duration_weeks Float
-  price          Float
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
+  uuid             String          @id @default(uuid())
+  name             String
+  includes         String[]
+  duration_weeks   Float
+  price            Float
+  application_type ApplicationType
+  created_at       DateTime        @default(now())
+  updated_at       DateTime        @updatedAt
 
   @@map("favors")
 }
@@ -62,11 +68,6 @@ model Guarantee {
   updated_at DateTime @updatedAt
 
   @@map("guarantees")
-}
-
-enum ApplicationType {
-  MOBILE
-  WEB
 }
 
 model Project {
