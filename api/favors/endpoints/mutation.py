@@ -8,14 +8,14 @@ from api.favors.types.response import FavorGetSchema
 @strawberry.type
 class FavorMutation:
     @strawberry.mutation
-    async def create_favor(
+    async def create(
         self,
         schema: FavorCreateSchema
     ) -> FavorGetSchema | None:
         return await get_favor_service().create(schema)
 
     @strawberry.mutation
-    async def update_favor(
+    async def update(
         self,
         uuid: str,
         schema: FavorOptionalSchema
@@ -23,7 +23,7 @@ class FavorMutation:
         return await get_favor_service().update(uuid, schema)
 
     @strawberry.mutation
-    async def delete_favor(
+    async def delete(
         self,
         uuid: str
     ) -> FavorGetSchema | None:
