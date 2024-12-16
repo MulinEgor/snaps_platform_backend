@@ -1,8 +1,7 @@
 import strawberry
 import strawberry.field_extensions
 
-from api.favors.repository import FavorRepository
-from api.favors.service import FavorService
+from api.favors.dependencies import get_favor_service
 from api.favors.types.request import FavorOptionalSchema
 from api.favors.types.response import FavorGetSchema
 
@@ -14,5 +13,4 @@ class FavorQuery:
         self,
         filters: FavorOptionalSchema
     ) -> list[FavorGetSchema]:
-        service = FavorService(FavorRepository())
-        return await service.get_all(filters)
+        return await get_favor_service().get_all(filters)

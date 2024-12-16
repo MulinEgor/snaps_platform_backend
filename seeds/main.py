@@ -19,7 +19,7 @@ async def run_seeds():
                 logger.info(f"Inserted {len(values)} records into {
                     table_name} table.")
             else:
-                logger.warning(
+                logger.error(
                     f"Table {table_name} model not found in Prisma client.")
 
     logger.info("Finished running seeds")

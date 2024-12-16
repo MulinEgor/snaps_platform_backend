@@ -1,8 +1,7 @@
 import strawberry
 
-from api.favors.repository import FavorRepository
+from api.favors.dependencies import get_favor_service
 from api.favors.types.request import FavorCreateSchema, FavorOptionalSchema
-from api.favors.service import FavorService
 from api.favors.types.response import FavorGetSchema
 
 
@@ -13,8 +12,7 @@ class FavorMutation:
         self,
         schema: FavorCreateSchema
     ) -> FavorGetSchema | None:
-        service = FavorService(FavorRepository())
-        return await service.create(schema)
+        return await get_favor_service().create(schema)
 
     @strawberry.mutation
     async def update_favor(
@@ -22,13 +20,11 @@ class FavorMutation:
         uuid: str,
         schema: FavorOptionalSchema
     ) -> FavorGetSchema | None:
-        service = FavorService(FavorRepository())
-        return await service.update(uuid, schema)
+        return await get_favor_service().update(uuid, schema)
 
     @strawberry.mutation
     async def delete_favor(
         self,
         uuid: str
     ) -> FavorGetSchema | None:
-        service = FavorService(FavorRepository())
-        return await service.delete(uuid)
+        return await get_favor_service().delete(uuid)
