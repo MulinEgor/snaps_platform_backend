@@ -7,7 +7,7 @@ def get_logger(name):
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
-    handler = logging.FileHandler('api.log')
+    handler = logging.FileHandler('logs.txt')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 

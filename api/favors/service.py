@@ -1,16 +1,13 @@
-from strawberry.exceptions import GraphQLError
-
 from api.favors.repository import FavorRepository
 from api.favors.types.response import FavorGetSchema
 from api.favors.types.request import FavorCreateSchema, FavorOptionalSchema
-from api.logger import get_logger
+from api.service import Service
 
 
-class FavorService:
-    logger = get_logger("FavorService")
-
+class FavorService(Service):
     def __init__(self, repository: FavorRepository):
-        self.repository = repository
+        super().__init__(self.__class__.__name__, repository)
+        self.repository: FavorRepository
 
     async def get(self, uuid: str) -> FavorGetSchema | None:
         self.logger.info(f"Fetching favor with uuid: {uuid}")
@@ -56,7 +53,3 @@ class FavorService:
             self.handle_error(f"Failed to delete favor with uuid: {uuid}")
         self.logger.info(f"Favor with uuid: {uuid} deleted successfully")
         return favor
-
-    def handle_error(self, message: str):
-        self.logger.error(f"Error: {message}")
-        raise GraphQLError(message)
