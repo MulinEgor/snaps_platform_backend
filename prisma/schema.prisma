@@ -28,19 +28,6 @@ model User {
   @@map("users")
 }
 
-model Media {
-  uuid           String         @id @default(uuid())
-  url            String
-  alt            String?
-  team_members   TeamMember[]
-  project_medias ProjectMedia[]
-  guarantees     Guarantee[]
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-
-  @@map("medias")
-}
-
 enum ApplicationType {
   MOBILE
   WEB
@@ -62,8 +49,7 @@ model Favor {
 model Guarantee {
   uuid       String   @id @default(uuid())
   name       String
-  media_uuid String
-  media      Media    @relation(fields: [media_uuid], references: [uuid])
+  image_url  String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -75,24 +61,14 @@ model Project {
   name             String
   description      String
   application_type ApplicationType
-  stack            String
   duration_weeks   Float
-  project_medias   ProjectMedia[]
-  reviews          Review[]
+  image_urls       String[]
+  review_uuid      String?         @unique
+  review           Review?         @relation(fields: [review_uuid], references: [uuid], onDelete: Cascade)
   created_at       DateTime        @default(now())
   updated_at       DateTime        @updatedAt
 
   @@map("projects")
-}
-
-model ProjectMedia {
-  uuid         String  @id @default(uuid())
-  project_uuid String
-  project      Project @relation(fields: [project_uuid], references: [uuid])
-  media_uuid   String
-  media        Media   @relation(fields: [media_uuid], references: [uuid])
-
-  @@map("project_medias")
 }
 
 model Stage {
@@ -111,8 +87,7 @@ model TeamMember {
   name        String
   position    String
   description String
-  media_uuid  String
-  media       Media    @relation(fields: [media_uuid], references: [uuid])
+  image_url   String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
@@ -151,14 +126,13 @@ model Request {
 }
 
 model Review {
-  uuid          String   @id @default(uuid())
+  uuid          String    @id @default(uuid())
   name          String
   description   String
   reviewer_name String
-  project_uuid  String
-  project       Project  @relation(fields: [project_uuid], references: [uuid])
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  projects      Project[]
 
   @@map("reviews")
 }

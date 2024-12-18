@@ -15,10 +15,8 @@ async def db_session() -> AsyncGenerator[Prisma, None]:
         logger.info('Connecting to database...')
         await prisma.connect()
     try:
-        logger.info('Yielding database session...')
         yield prisma
     except Exception as e:
-        logger.error('Database error: %s', e)
+        logger.error(e)
     finally:
-        logger.info('Disconnecting from database...')
         await prisma.disconnect()

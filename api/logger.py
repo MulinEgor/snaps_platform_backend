@@ -7,8 +7,14 @@ def get_logger(name):
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
-    handler = logging.FileHandler('api.log')
+    # Logging to file
+    handler = logging.FileHandler('logs.txt')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+
+    # Logging to console
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
 
     return logger
