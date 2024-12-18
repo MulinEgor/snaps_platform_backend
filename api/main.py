@@ -9,10 +9,15 @@ from api.config import APIConfig
 from api.favors.endpoints.mutation import FavorMutation
 from api.favors.endpoints.query import FavorQuery
 from api.guarantees.endpoints.mutation import GuaranteeMutation
+from api.guarantees.endpoints.query import GuaranteeQuery
 from api.projects.endpoints.mutation import ProjectMutation
 from api.projects.endpoints.query import ProjectQuery
-from api.guarantees.endpoints.query import GuaranteeQuery
-
+from api.questions.endpoints.mutation import QuestionMutation
+from api.questions.endpoints.query import QuestionQuery
+from api.stages.endpoints.mutation import StageMutation
+from api.stages.endpoints.query import StageQuery
+from api.team_members.endpoints.mutation import TeamMemberMutation
+from api.team_members.endpoints.query import TeamMemberQuery
 
 # Loading environment variables
 load_dotenv()
@@ -29,7 +34,7 @@ app.add_middleware(
 
 
 @strawberry.type
-class Query(FavorQuery, GuaranteeQuery, ProjectQuery):
+class Query(FavorQuery, GuaranteeQuery, ProjectQuery, StageQuery, TeamMemberQuery, QuestionQuery):
     pass
 
 
@@ -46,6 +51,18 @@ class Mutation:
     @strawberry.field
     def projects(self) -> ProjectMutation:
         return ProjectMutation()
+
+    @strawberry.field
+    def stages(self) -> StageMutation:
+        return StageMutation()
+
+    @strawberry.field
+    def team_members(self) -> TeamMemberMutation:
+        return TeamMemberMutation()
+
+    @strawberry.field
+    def questions(self) -> QuestionMutation:
+        return QuestionMutation()
 
 
 router = GraphQLRouter(

@@ -1,6 +1,6 @@
 from prisma.models import Favor
 
-from api.favors.types.request import FavorCreateSchema, FavorOptionalSchema
+from api.favors.types.request import FavorSchema, FavorOptionalSchema
 from api.repository import Repository
 
 
@@ -14,7 +14,7 @@ class FavorRepository(Repository):
     async def get_all(self, filters: FavorOptionalSchema) -> list[Favor]:
         return await super().get_all(filters.to_dict())
 
-    async def create(self, data: FavorCreateSchema) -> Favor:
+    async def create(self, data: FavorSchema) -> Favor:
         return await super().create(data.__dict__)
 
     async def update(self, uuid: str, data: FavorOptionalSchema) -> Favor:

@@ -4,7 +4,7 @@ import prisma
 
 
 @strawberry.input
-class FavorCreateSchema:
+class FavorSchema:
     name: str
     includes: list[str]
     duration_weeks: float

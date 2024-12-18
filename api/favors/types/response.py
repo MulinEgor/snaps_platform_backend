@@ -1,8 +1,8 @@
 import strawberry
 
-from api.favors.types.request import FavorCreateSchema
+from api.favors.types.request import FavorSchema
 
 
 @strawberry.type
-class FavorGetSchema(FavorCreateSchema):
+class FavorGetSchema(FavorSchema):
     uuid: str

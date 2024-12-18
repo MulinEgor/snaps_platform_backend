@@ -1,7 +1,7 @@
 import strawberry
 
 from api.favors.dependencies import get_favor_service
-from api.favors.types.request import FavorCreateSchema, FavorOptionalSchema
+from api.favors.types.request import FavorSchema, FavorOptionalSchema
 from api.favors.types.response import FavorGetSchema
 
 
@@ -10,7 +10,7 @@ class FavorMutation:
     @strawberry.mutation
     async def create(
         self,
-        schema: FavorCreateSchema
+        schema: FavorSchema
     ) -> FavorGetSchema | None:
         return await get_favor_service().create(schema)
 
