@@ -11,6 +11,20 @@ class ReviewSchema:
 
 
 @strawberry.input
+class ReviewOptionalSchema:
+    name: Optional[str] = None
+    description: Optional[str] = None
+    reviewer_name: Optional[str] = None
+
+    def to_dict(self) -> dict:
+        return {
+            key: value
+            for key, value in self.__dict__.items()
+            if value is not None
+        }
+
+
+@strawberry.input
 class ProjectSchema:
     name: str
     description: str
@@ -27,7 +41,7 @@ class ProjectOptionalSchema:
     application_type: Optional[ApplicationType] = None
     duration_weeks: Optional[float] = None
     image_urls: Optional[list[str]] = None
-    review: Optional[ReviewSchema] = None
+    review: Optional[ReviewOptionalSchema] = None
 
     def to_dict(self) -> dict:
         return {

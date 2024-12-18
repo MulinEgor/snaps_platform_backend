@@ -64,7 +64,7 @@ model Project {
   duration_weeks   Float
   image_urls       String[]
   review_uuid      String?         @unique
-  review           Review?         @relation(fields: [review_uuid], references: [uuid])
+  review           Review?         @relation(fields: [review_uuid], references: [uuid], onDelete: Cascade)
   created_at       DateTime        @default(now())
   updated_at       DateTime        @updatedAt
 
@@ -126,13 +126,13 @@ model Request {
 }
 
 model Review {
-  uuid          String   @id @default(uuid())
+  uuid          String    @id @default(uuid())
   name          String
   description   String
   reviewer_name String
-  project       Project?
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  projects      Project[]
 
   @@map("reviews")
 }
