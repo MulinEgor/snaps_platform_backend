@@ -16,23 +16,13 @@ from api.questions.endpoints.mutation import QuestionMutation
 from api.questions.endpoints.query import QuestionQuery
 from api.stages.endpoints.mutation import StageMutation
 from api.stages.endpoints.query import StageQuery
-from api.team_members.endpoints.mutation import TeamMemberMutation
-from api.team_members.endpoints.query import TeamMemberQuery
+from api.requests.endpoints.mutation import RequestMutation
+from api.requests.endpoints.query import RequestQuery
 from api.s3.endpoints.routes import router as s3_router
 
 
 # Loading environment variables
 load_dotenv()
-
-# Configuration API
-config = APIConfig()
-app = FastAPI(
-    **config.model_dump()
-)
-app.add_middleware(
-    CORSMiddleware,
-    **config.cors.model_dump()
-)
 
 
 @strawberry.type
@@ -41,8 +31,8 @@ class Query(
     GuaranteeQuery,
     ProjectQuery,
     StageQuery,
-    TeamMemberQuery,
-    QuestionQuery
+    QuestionQuery,
+    RequestQuery
 ):
     pass
 
@@ -66,18 +56,28 @@ class Mutation:
         return StageMutation()
 
     @strawberry.field
-    def team_members(self) -> TeamMemberMutation:
-        return TeamMemberMutation()
-
-    @strawberry.field
     def questions(self) -> QuestionMutation:
         return QuestionMutation()
+
+    @strawberry.field
+    def requests(self) -> RequestMutation:
+        return RequestMutation()
 
 
 graphql_router = GraphQLRouter(
     Schema(Query, Mutation),
     prefix="/graphql",
     include_in_schema=False
+)
+
+# FastAPI configuration
+config = APIConfig()
+app = FastAPI(
+    **config.model_dump()
+)
+app.add_middleware(
+    CORSMiddleware,
+    **config.cors.model_dump()
 )
 
 
