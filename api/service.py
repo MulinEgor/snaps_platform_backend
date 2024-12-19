@@ -6,9 +6,9 @@ from api.repository import Repository
 
 class Service:
     def __init__(self, name: str, repository: Repository):
-        self.logger = get_logger(name)
-        self.repository = repository
+        self._logger = get_logger(name)
+        self._repository = repository
 
-    def handle_error(self, message: str):
-        self.logger.error(message)
+    def _handle_error(self, message: str):
+        self._logger.error(message)
         raise GraphQLError(message)
