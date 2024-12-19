@@ -1,8 +1,7 @@
 import strawberry
 
 from api.projects.dependencies import get_project_service
-from api.projects.types.request import ProjectSchema, ProjectOptionalSchema
-from api.projects.types.response import ProjectGetSchema
+from api.projects.schemas import ProjectGetSchema, ProjectUpdateSchema, ProjectCreateSchema
 
 
 @strawberry.type
@@ -10,7 +9,7 @@ class ProjectMutation:
     @strawberry.mutation
     async def create(
         self,
-        schema: ProjectSchema
+        schema: ProjectCreateSchema
     ) -> ProjectGetSchema | None:
         return await get_project_service().create(schema)
 
@@ -18,7 +17,7 @@ class ProjectMutation:
     async def update(
         self,
         uuid: str,
-        schema: ProjectOptionalSchema
+        schema: ProjectUpdateSchema
     ) -> ProjectGetSchema | None:
         return await get_project_service().update(uuid, schema)
 

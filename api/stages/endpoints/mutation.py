@@ -1,8 +1,7 @@
 import strawberry
 
 from api.stages.dependencies import get_stage_service
-from api.stages.types.request import StageSchema, StageOptionalSchema
-from api.stages.types.response import StageGetSchema
+from api.stages.schemas import StageCreateSchema, StageUpdateSchema, StageGetSchema
 
 
 @strawberry.type
@@ -10,7 +9,7 @@ class StageMutation:
     @strawberry.mutation
     async def create(
         self,
-        schema: StageSchema
+        schema: StageCreateSchema
     ) -> StageGetSchema | None:
         return await get_stage_service().create(schema)
 
@@ -18,7 +17,7 @@ class StageMutation:
     async def update(
         self,
         uuid: str,
-        schema: StageOptionalSchema
+        schema: StageUpdateSchema
     ) -> StageGetSchema | None:
         return await get_stage_service().update(uuid, schema)
 

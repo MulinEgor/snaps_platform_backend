@@ -1,8 +1,7 @@
 import strawberry
 
 from api.guarantees.dependencies import get_guarantee_service
-from api.guarantees.types.request import GuaranteeSchema, GuaranteeOptionalSchema
-from api.guarantees.types.response import GuaranteeGetSchema
+from api.guarantees.schemas import GuaranteeGetSchema, GuaranteeCreateSchema, GuaranteeUpdateSchema
 
 
 @strawberry.type
@@ -10,7 +9,7 @@ class GuaranteeMutation:
     @strawberry.mutation
     async def create(
         self,
-        schema: GuaranteeSchema
+        schema: GuaranteeCreateSchema
     ) -> GuaranteeGetSchema | None:
         return await get_guarantee_service().create(schema)
 
@@ -18,7 +17,7 @@ class GuaranteeMutation:
     async def update(
         self,
         uuid: str,
-        schema: GuaranteeOptionalSchema
+        schema: GuaranteeUpdateSchema
     ) -> GuaranteeGetSchema | None:
         return await get_guarantee_service().update(uuid, schema)
 
