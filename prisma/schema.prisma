@@ -82,18 +82,6 @@ model Stage {
   @@map("stages")
 }
 
-model TeamMember {
-  uuid        String   @id @default(uuid())
-  name        String
-  position    String
-  description String
-  image_url   String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-
-  @@map("team_members")
-}
-
 model Question {
   uuid       String   @id @default(uuid())
   question   String
