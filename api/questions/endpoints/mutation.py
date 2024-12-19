@@ -1,8 +1,7 @@
 import strawberry
 
 from api.questions.dependencies import get_question_service
-from api.questions.types.request import QuestionSchema, QuestionOptionalSchema
-from api.questions.types.response import QuestionGetSchema
+from api.questions.schemas import QuestionCreateSchema, QuestionUpdateSchema, QuestionGetSchema
 
 
 @strawberry.type
@@ -10,7 +9,7 @@ class QuestionMutation:
     @strawberry.mutation
     async def create(
         self,
-        schema: QuestionSchema
+        schema: QuestionCreateSchema
     ) -> QuestionGetSchema | None:
         return await get_question_service().create(schema)
 
@@ -18,7 +17,7 @@ class QuestionMutation:
     async def update(
         self,
         uuid: str,
-        schema: QuestionOptionalSchema
+        schema: QuestionUpdateSchema
     ) -> QuestionGetSchema | None:
         return await get_question_service().update(uuid, schema)
 

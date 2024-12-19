@@ -18,6 +18,8 @@ from api.stages.endpoints.mutation import StageMutation
 from api.stages.endpoints.query import StageQuery
 from api.team_members.endpoints.mutation import TeamMemberMutation
 from api.team_members.endpoints.query import TeamMemberQuery
+from api.s3.endpoints.routes import router as s3_router
+
 
 # Loading environment variables
 load_dotenv()
@@ -34,7 +36,14 @@ app.add_middleware(
 
 
 @strawberry.type
-class Query(FavorQuery, GuaranteeQuery, ProjectQuery, StageQuery, TeamMemberQuery, QuestionQuery):
+class Query(
+    FavorQuery,
+    GuaranteeQuery,
+    ProjectQuery,
+    StageQuery,
+    TeamMemberQuery,
+    QuestionQuery
+):
     pass
 
 
@@ -65,9 +74,17 @@ class Mutation:
         return QuestionMutation()
 
 
-router = GraphQLRouter(
-    Schema(Query, Mutation)
+graphql_router = GraphQLRouter(
+    Schema(Query, Mutation),
+    prefix="/graphql",
+    include_in_schema=False
 )
 
-# including graphql router into FastAPI app
-app.include_router(router, prefix="/graphql")
+
+# including routers into FastAPI app
+routers = [
+    graphql_router,
+    s3_router
+]
+for router in routers:
+    app.include_router(router)

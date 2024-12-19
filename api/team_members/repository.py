@@ -1,6 +1,6 @@
 from prisma.models import TeamMember
 
-from api.team_members.types.request import TeamMemberSchema, TeamMemberOptionalSchema
+from api.team_members.schemas import TeamMemberCreateSchema, TeamMemberUpdateSchema
 from api.repository import Repository
 
 
@@ -11,13 +11,13 @@ class TeamMemberRepository(Repository):
     async def get(self, uuid: str) -> TeamMember | None:
         return await super().get(uuid)
 
-    async def get_all(self, filters: TeamMemberOptionalSchema) -> list[TeamMember] | None:
+    async def get_all(self, filters: TeamMemberUpdateSchema) -> list[TeamMember] | None:
         return await super().get_all(filters.to_dict())
 
-    async def create(self, data: TeamMemberSchema) -> TeamMember:
+    async def create(self, data: TeamMemberCreateSchema) -> TeamMember:
         return await super().create(data.__dict__)
 
-    async def update(self, uuid: str, data: TeamMemberOptionalSchema) -> TeamMember:
+    async def update(self, uuid: str, data: TeamMemberUpdateSchema) -> TeamMember:
         return await super().update(uuid, data.to_dict())
 
     async def delete(self, uuid: str) -> TeamMember:

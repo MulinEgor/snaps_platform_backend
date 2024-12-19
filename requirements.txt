@@ -3,3 +3,5 @@ uvicorn
 pydantic
 prisma==0.15.0
 strawberry-graphql
+aiobotocore
+python-multipart
