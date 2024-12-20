@@ -4,9 +4,11 @@ from pydantic import BaseModel
 from api.favors.schemas import FavorCreateSchema
 from api.guarantees.schemas import GuaranteeCreateSchema
 from api.stages.schemas import StageCreateSchema
+from api.auth.roles.schemas import RoleCreateSchema
+from api.auth.users.schemas import UserLoginSchema
 
 
-favors_data = [
+favors = [
     FavorCreateSchema(
         name='Старт',
         includes=[
@@ -81,7 +83,7 @@ favors_data = [
 
 ]
 
-guarantees_data = [
+guarantees = [
     GuaranteeCreateSchema(
         name='Возврат предоплаты при срыве сроков',
         image_url='https://s3-alpha-sig.figma.com/img/d843/2874/2c60563b3508d438307b06da1725732a?Expires=1735516800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=RoBpIapBwAUME~Zt9qqbSQfj6PGNZKv6VqD16FQ5saXsdDyGHEMMcqzmOjY5~yiERq1BDWuM7d0Bp8opFsHSDcwc8zAbyKJhYJLaZL1OVHi16IZkjZB0pYjnBOZu00VT~RU-P6UvuIf0-7w9FVJjwdrD8ztgzLK0z-es5eCliS6pR3atedylZLcCuCrqBeY8eb07i2tzmBMjIfEPOLvg53Ah36KcuwAkUj3YlYLn3uhgPpS-Ewf9UYgMlL3S86Lpn4BJmbbv5Il7ogh6V7HtYbL5L~DCcSrbLK-5-ohddCuWMjgSWPEkx1sU6DivCZ53YDBpAZV~sASN1e-9Bk~7wA__'
@@ -100,7 +102,7 @@ guarantees_data = [
     )
 ]
 
-stages_data = [
+stages = [
     StageCreateSchema(
         place=0,
         name='Обсуждение проекта',
@@ -128,8 +130,26 @@ stages_data = [
     ),
 ]
 
+roles = [
+    RoleCreateSchema(
+        name='admin'
+    ),
+    RoleCreateSchema(
+        name='user'
+    )
+]
+
+users = [
+    UserLoginSchema(
+        email='admin@gmail.com',
+        password='admin'
+    )
+]
+
 
 class SeedDataSchema(BaseModel):
-    favor: list[FavorCreateSchema] = favors_data
-    guarantee: list[GuaranteeCreateSchema] = guarantees_data
-    stage: list[StageCreateSchema] = stages_data
+    favor: list[FavorCreateSchema] = favors
+    guarantee: list[GuaranteeCreateSchema] = guarantees
+    stage: list[StageCreateSchema] = stages
+    role: list[RoleCreateSchema] = roles
+    user: list[UserLoginSchema] = users

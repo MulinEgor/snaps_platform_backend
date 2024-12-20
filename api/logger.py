@@ -8,7 +8,7 @@ def get_logger(name):
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
     # Logging to file
-    handler = logging.FileHandler('logs.txt')
+    handler = logging.FileHandler('logs.txt', mode='w')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 

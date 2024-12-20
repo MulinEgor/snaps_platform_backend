@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import strawberry
 from strawberry.fastapi import GraphQLRouter
@@ -18,6 +18,11 @@ from api.stages.endpoints.mutation import StageMutation
 from api.stages.endpoints.query import StageQuery
 from api.requests.endpoints.mutation import RequestMutation
 from api.requests.endpoints.query import RequestQuery
+from api.auth.endpoints.mutation import AuthMutation
+from api.auth.users.endpoints.mutation import UserMutation
+from api.auth.users.endpoints.query import UserQuery
+from api.auth.roles.endpoints.mutation import RoleMutation
+from api.auth.roles.endpoints.query import RoleQuery
 from api.s3.endpoints.routes import router as s3_router
 
 
@@ -32,7 +37,9 @@ class Query(
     ProjectQuery,
     StageQuery,
     QuestionQuery,
-    RequestQuery
+    RequestQuery,
+    UserQuery,
+    RoleQuery
 ):
     pass
 
@@ -63,12 +70,30 @@ class Mutation:
     def requests(self) -> RequestMutation:
         return RequestMutation()
 
+    @strawberry.field
+    def auth(self) -> AuthMutation:
+        return AuthMutation()
+
+    @strawberry.field
+    def users(self) -> UserMutation:
+        return UserMutation()
+
+    @strawberry.field
+    def roles(self) -> RoleMutation:
+        return RoleMutation()
+
+
+async def get_context(request: Request):
+    return {"request": request}
+
 
 graphql_router = GraphQLRouter(
     Schema(Query, Mutation),
     prefix="/graphql",
+    context_getter=get_context,
     include_in_schema=False
 )
+
 
 # FastAPI configuration
 config = APIConfig()
