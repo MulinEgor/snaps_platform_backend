@@ -12,7 +12,12 @@ class RoleService(Service):
         return await super().get(uuid)
 
     async def get_all(self) -> list[RoleGetSchema]:
-        return await self._repository.get_all()
+        self._logger.info(f"Fetching all data")
+        data = await self._repository.get_all()
+        if not data:
+            data = []
+        self._logger.info(f"Retrieved {len(data)} data")
+        return data
 
     async def create(self, data: RoleCreateSchema) -> RoleGetSchema | None:
         return await super().create(data)

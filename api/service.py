@@ -21,6 +21,8 @@ class Service:
         self._logger.info(f"Fetching all data with filters: \n{
             filters.to_dict()}")
         data = await self._repository.get_all(filters)
+        if not data:
+            data = []
         self._logger.info(f"Retrieved {len(data)} data")
         return data
 
