@@ -14,6 +14,7 @@ jobs:
 
     - name: Set env variables
       run: |
+        touch .env
         echo "API_HOST=${{ vars.API_HOST }}" >> .env
         echo "API_PORT=${{ vars.API_PORT }}" >> .env
         echo "POSTGRES_USER=${{ vars.POSTGRES_USER }}" >> .env
