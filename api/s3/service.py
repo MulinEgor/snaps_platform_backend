@@ -12,9 +12,9 @@ class S3Service(Service):
         self._config = {
             "aws_access_key_id": os.getenv("AWS_ACCESS_KEY_ID"),
             "aws_secret_access_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
-            "endpoint_url": os.getenv("ENDPOINT_URL"),
+            "endpoint_url": os.getenv("AWS_ENDPOINT_URL"),
         }
-        self._bucket_name = os.getenv("BUCKET_NAME")
+        self._bucket_name = os.getenv("AWS_BUCKET_NAME")
         self._session = get_session()
 
     @asynccontextmanager
