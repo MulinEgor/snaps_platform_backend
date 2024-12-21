@@ -6,6 +6,7 @@ from strawberry.fastapi import GraphQLRouter
 from strawberry import Schema
 
 from api.config import APIConfig
+from api.database import prisma
 from api.favors.endpoints.mutation import FavorMutation
 from api.favors.endpoints.query import FavorQuery
 from api.guarantees.endpoints.mutation import GuaranteeMutation
@@ -105,6 +106,16 @@ app.add_middleware(
     **config.cors.model_dump()
 )
 
+
+@app.on_event("startup")
+async def on_startup():
+    await prisma.connect()
+
+
+@app.on_event("shutdown")
+async def on_shutdown():
+    await prisma.disconnect()
+    
 
 # including routers into FastAPI app
 routers = [
