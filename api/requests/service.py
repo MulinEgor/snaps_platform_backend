@@ -9,16 +9,16 @@ class RequestService(Service):
         self._repository: RequestRepository
 
     async def get(self, uuid: str) -> RequestGetSchema | None:
-        return super().get(uuid)
+        return await super().get(uuid)
 
     async def get_all(self, filters: RequestUpdateSchema) -> list[RequestGetSchema]:
-        return super().get_all(filters)
+        return await super().get_all(filters)
 
     async def create(self, data: RequestCreateSchema) -> RequestGetSchema | None:
-        return super().create(data)
+        return await super().create(data)
 
     async def update(self, uuid: str, data: RequestUpdateSchema) -> RequestGetSchema | None:
-        return super().update(uuid, data)
+        return await super().update(uuid, data)
 
     async def delete(self, uuid: str) -> RequestGetSchema | None:
-        return super().delete(uuid)
+        return await super().delete(uuid)
