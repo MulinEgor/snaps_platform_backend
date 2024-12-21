@@ -21,8 +21,6 @@ class Service:
         self._logger.info(f"Fetching all data with filters: \n{
             filters.to_dict()}")
         data = await self._repository.get_all(filters)
-        if not data:
-            self._handle_error("No data found")
         self._logger.info(f"Retrieved {len(data)} data")
         return data
 

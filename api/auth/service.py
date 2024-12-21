@@ -14,7 +14,6 @@ class AuthService(Service):
 
     async def login(self, schema: UserLoginSchema) -> AuthGetSchema | None:
         user = await self._user_service.login(schema)
-        print(user)
         tokens = self._jwt_service.create_tokens(
             JWTCreateSchema(
                 uuid=user.uuid,

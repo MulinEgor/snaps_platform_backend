@@ -11,7 +11,7 @@ class GuaranteeService(Service):
     async def get(self, uuid: str) -> GuaranteeGetSchema | None:
         return await super().get(uuid)
 
-    async def get_all(self, filters: GuaranteeUpdateSchema) -> list[GuaranteeGetSchema] | None:
+    async def get_all(self, filters: GuaranteeUpdateSchema) -> list[GuaranteeGetSchema]:
         return await super().get_all(filters)
 
     async def create(self, data: GuaranteeCreateSchema) -> GuaranteeGetSchema | None:

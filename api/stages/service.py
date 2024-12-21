@@ -11,7 +11,7 @@ class StageService(Service):
     async def get(self, uuid: str) -> StageGetSchema | None:
         return super().get(uuid)
 
-    async def get_all(self, filters: StageUpdateSchema) -> list[StageGetSchema] | None:
+    async def get_all(self, filters: StageUpdateSchema) -> list[StageGetSchema]:
         return super().get_all(filters)
 
     async def create(self, data: StageCreateSchema) -> StageGetSchema | None:

@@ -11,7 +11,7 @@ class FavorService(Service):
     async def get(self, uuid: str) -> FavorGetSchema | None:
         return await super().get(uuid)
 
-    async def get_all(self, filters: FavorUpdateSchema) -> list[FavorGetSchema] | None:
+    async def get_all(self, filters: FavorUpdateSchema) -> list[FavorGetSchema]:
         return await super().get_all(filters)
 
     async def create(self, data: FavorCreateSchema) -> FavorGetSchema | None:

@@ -11,7 +11,7 @@ class QuestionService(Service):
     async def get(self, uuid: str) -> QuestionGetSchema | None:
         return await self._repository.get(uuid)
 
-    async def get_all(self, filters: QuestionUpdateSchema) -> list[QuestionGetSchema] | None:
+    async def get_all(self, filters: QuestionUpdateSchema) -> list[QuestionGetSchema]:
         return await self._repository.get_all(filters)
 
     async def create(self, data: QuestionCreateSchema) -> QuestionGetSchema | None:

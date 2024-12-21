@@ -21,7 +21,7 @@ class UserService(Service):
             self._handle_error('Invalid email or password')
         return user
 
-    async def get_all(self, filters: UserUpdateSchema) -> list[UserGetSchema] | None:
+    async def get_all(self, filters: UserUpdateSchema) -> list[UserGetSchema]:
         prepared_data = UserUpdateORMSchema(
             email=filters.email,
             hashed_password=UserService.hash_password(

@@ -11,7 +11,7 @@ class RequestService(Service):
     async def get(self, uuid: str) -> RequestGetSchema | None:
         return super().get(uuid)
 
-    async def get_all(self, filters: RequestUpdateSchema) -> list[RequestGetSchema] | None:
+    async def get_all(self, filters: RequestUpdateSchema) -> list[RequestGetSchema]:
         return super().get_all(filters)
 
     async def create(self, data: RequestCreateSchema) -> RequestGetSchema | None:

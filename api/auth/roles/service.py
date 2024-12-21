@@ -11,11 +11,8 @@ class RoleService(Service):
     async def get(self, uuid: str) -> RoleGetSchema | None:
         return await super().get(uuid)
 
-    async def get_all(self) -> list[RoleGetSchema] | None:
-        roles = await self._repository.get_all()
-        if not roles:
-            self._handle_error("No roles found")
-        return roles
+    async def get_all(self) -> list[RoleGetSchema]:
+        return await self._repository.get_all()
 
     async def create(self, data: RoleCreateSchema) -> RoleGetSchema | None:
         return await super().create(data)

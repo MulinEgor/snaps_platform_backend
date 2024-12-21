@@ -5,8 +5,6 @@ services:
     command: >
         sh -c " \
         python -m prisma generate &&  \
-        python -m prisma db push && \
-        python -m seeds.main &&  \
         uvicorn api.main:app --host ${API_HOST} --port ${API_PORT}"
     volumes:
       - .:/app

@@ -11,7 +11,7 @@ class ProjectService(Service):
     async def get(self, uuid: str) -> ProjectGetSchema | None:
         return await super().get(uuid)
 
-    async def get_all(self, filters: ProjectUpdateSchema) -> list[ProjectGetSchema] | None:
+    async def get_all(self, filters: ProjectUpdateSchema) -> list[ProjectGetSchema]:
         return await super().get_all(filters)
 
     async def create(self, data: ProjectCreateSchema) -> ProjectGetSchema | None:
