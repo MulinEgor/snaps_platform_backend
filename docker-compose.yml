@@ -2,24 +2,16 @@ services:
   api:
     container_name: api
     build: .
-    command: /bin/bash -c "chmod +x scripts/init.sh && \ scripts/init.sh && \ python -m seeds.main && \ uvicorn api.main:app --host ${API_HOST} --port ${API_PORT}"
+    command: >
+        sh -c " \
+        python -m prisma generate &&  \
+        python -m prisma db push && \
+        python -m seeds.main &&  \
+        uvicorn api.main:app --host ${API_HOST} --port ${API_PORT}"
     volumes:
       - .:/app
     env_file:
       - .env
     ports:
       - "${API_PORT}:${API_PORT}"
-    environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
-    depends_on:
-      - db
-
-  db:
-    container_name: db
-    image: postgres:13
-    env_file:
-      - .env
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-    ports:
-      - "5433:5432"
+  
