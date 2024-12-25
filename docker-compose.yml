@@ -5,13 +5,13 @@ services:
     command: >
         sh -c " \
         python -m prisma generate &&  \
-        python -m prisma db push && \
+        python -m prisma db push --force-reset && \
         python -m seeds.main && \
         uvicorn api.main:app --host ${API_HOST} --port ${API_PORT}"
     volumes:
       - .:/app
-    environment:
-      - "DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_INNER_PORT}/${POSTGRES_DB}"
+    # environment:
+    #   - "DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_INNER_PORT}/${POSTGRES_DB}"
     env_file:
       - .env
     ports:
@@ -19,10 +19,10 @@ services:
     depends_on:
       - db
   
-  db:
-    container_name: db
-    image: postgres:13
-    env_file:
-      - .env
-    ports:
-      - "${DB_PORT}:${DB_INNER_PORT}"
+  # db:
+  #   container_name: db
+  #   image: postgres:13
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "${DB_PORT}:${DB_INNER_PORT}"
