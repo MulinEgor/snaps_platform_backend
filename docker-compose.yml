@@ -16,9 +16,7 @@ services:
       - .env
     ports:
       - "${API_PORT}:${API_PORT}"
-    depends_on:
-      - db
-  
+      
   # db:
   #   container_name: db
   #   image: postgres:13
