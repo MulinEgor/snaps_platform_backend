@@ -29,6 +29,7 @@ jobs:
         echo "JWT_REFRESH_SECRET=${{vars.JWT_REFRESH_SECRET}}" >> .env
         echo "JWT_ACCESS_EXPIRE_DAYS=${{vars.JWT_ACCESS_EXPIRE_DAYS}}" >> .env
         echo "JWT_REFRESH_EXPIRE_DAYS=${{vars.JWT_REFRESH_EXPIRE_DAYS}}" >> .env
+        echo "S3_SEEDS_DATA_PATH=${{vars.S3_SEEDS_DATA_PATH}}" >> .env
 
     - name: Start docker compose
       run: |

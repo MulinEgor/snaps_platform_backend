@@ -22,12 +22,13 @@ class S3Service(Service):
         async with self._session.create_client("s3", **self._config) as client:
             yield client
 
-    async def _get(self, name: str):
+    async def _get(self, name: str) -> dict:
         self._logger.info(f"Checking if file with name {name} exists in S3")
         async with self._get_client() as client:
             try:
-                await client.get_object(Bucket=self._bucket_name, Key=name)
+                object = await client.get_object(Bucket=self._bucket_name, Key=name)
                 self._logger.info(f"File with name {name} exists in S3")
+                return object
             except Exception as e:
                 self._handle_error(
                     f"File with name {name} does not exist in S3", 404
@@ -58,6 +59,23 @@ class S3Service(Service):
                 self._handle_error(
                     f"Failed to delete file with name {name} from S3: {e}", 500
                 )
+
+    async def download(self, name: str, download_path: str):
+        self._logger.info(f"Downloading file with name {name} from S3")
+        try:
+            obj = await self._get(name)
+            async with obj['Body'] as stream:
+                with open(download_path, 'wb') as f:
+                    chunk = await stream.read()
+                    if chunk:
+                        f.write(chunk)
+                    else:
+                        self._logger.error(f"File {name} is empty")
+            self._logger.info(f"File {name} successfully downloaded to {download_path}")
+        except Exception as e:
+            self._handle_error(
+                f"Failed to download file {name} from S3: {e}", 500
+            )
 
     def _handle_error(self, message: str, status_code: int):
         self._logger.error(message)
