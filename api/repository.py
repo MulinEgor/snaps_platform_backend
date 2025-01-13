@@ -17,7 +17,12 @@ class Repository:
     async def get_all(self, filters: dict) -> list[any]:
         async with db_session() as session:
             table = self.get_table(session)
-            return await table.find_many(where=filters, include=self.include)
+            return await table.find_many(where={
+                    k: v.lower() if isinstance(v, str) else v
+                    for k, v in filters.items()
+                }, 
+                include=self.include
+            )
 
     async def create(self, data: dict) -> any:
         async with db_session() as session:
