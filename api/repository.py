@@ -17,10 +17,16 @@ class Repository:
     async def get_all(self, filters: dict) -> list[any]:
         async with db_session() as session:
             table = self.get_table(session)
-            return await table.find_many(where={
-                    k: v.lower() if isinstance(v, str) else v
-                    for k, v in filters.items()
-                }, 
+            
+            processed_filters = {}
+            for k, v in filters.items():
+                if isinstance(v, str):
+                    processed_filters[k] = {'contains': v.lower(), 'mode': 'insensitive'}
+                else:
+                    processed_filters[k] = v
+                    
+            return await table.find_many(
+                where=processed_filters,
                 include=self.include
             )
 
